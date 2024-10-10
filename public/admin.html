@@ -1,0 +1,43 @@
+<div class="order">
+    <p>Заказ №1: Ник: User1, Заказ: Item1, Цена: 100 руб.</p>
+    <p class="status">Статус: На рассмотрении</p>
+    <div class="order-buttons">
+        <button onclick="changeStatus(1, 'Одобрен')">Одобрить</button>
+        <button onclick="changeStatus(1, 'Отказан')">Отказать</button>
+        <button onclick="deleteOrder(1)">Удалить</button>
+    </div>
+</div>
+
+<script>
+    function changeStatus(orderNumber, newStatus) {
+        fetch('/admin/orders/change-status', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderNumber, newStatus })
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            location.reload();
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+
+    function deleteOrder(orderNumber) {
+        fetch('/admin/orders/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderNumber })
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            location.reload();
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+</script>
